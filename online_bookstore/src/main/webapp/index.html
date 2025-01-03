@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Book Store</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: #444;
+      }
+
+      div {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      a button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 10px 0;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      a button:hover {
+        background-color: #0056b3;
+      }
+
+      form {
+        margin: 20px 0;
+      }
+
+      label {
+        display: block;
+        margin: 10px 0 5px;
+        font-weight: bold;
+      }
+
+      input[type="text"] {
+        width: calc(100% - 20px);
+        padding: 8px 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      input[type="submit"] {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 1rem;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #218838;
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid #ddd;
+        margin: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <!-- Add Task Section -->
+      <a href="/todo2/books/addBook">
+        <button>
+          <h2>Add a Book</h2>
+        </button>
+      </a>
+      <hr />
+
+      <!-- Display Tasks Section -->
+      <a href="/todo2/books/displayBooks">
+        <button>
+          <h2>Display Books</h2>
+        </button>
+      </a>
+      <hr />
+
+      <!-- Delete Task Section -->
+      <form action="/todo2/books/deleteBook" method="post">
+        <h2>Delete book</h2>
+        <label for="bookID">Book ID:</label>
+        <input type="text" id="bookID" name="id" />
+        <input type="submit" value="Delete" />
+      </form>
+      <hr />
+
+      <!-- Search Tasks Section -->
+      <form action="/todo2/books/searchBooks" method="get">
+        <h2>Search for books</h2>
+        <label for="searchTerm">Search Term:</label>
+        <input type="text" id="searchTerm" name="title" />
+        <input type="submit" value="Search" />
+      </form>
+    </div>
+  </body>
+</html>
