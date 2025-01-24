@@ -1,0 +1,14 @@
+version: '3.9' # You can use any version above 3.0
+services:
+  postgres:
+    image: postgres
+    container_name: mypostgres
+    environment:
+      POSTGRES_PASSWORD: "#lemi123"
+    ports:
+      - "5432:5432" # Maps the container's port 5432 to the host's port 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Persists PostgreSQL data
+
+volumes:
+  postgres_data:
