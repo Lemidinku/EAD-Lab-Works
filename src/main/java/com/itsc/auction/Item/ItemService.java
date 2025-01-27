@@ -17,6 +17,9 @@ public class ItemService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ItemWebSocketController itemWebSocketController;
+
     public List<Item> getMyItems(String userName) {
 
         User owner = userService.findUserByUsername(userName);
@@ -31,7 +34,9 @@ public class ItemService {
 
     public Item createItem(Item item) {
         System.out.println("createItem" + item);
-        return itemRepository.save(item);
+        Item createdItem = itemRepository.save(item);
+        itemWebSocketController.notifyItemChange("CREATE", createdItem); // Notify WebSocket clients
+        return createdItem;
     }
 
     public void deleteItem(Long id) {
@@ -41,5 +46,10 @@ public class ItemService {
             throw new RuntimeException("Item not found with id " + id);
         }
         itemRepository.delete(item);
+        itemWebSocketController.notifyItemChange("DELETE", item); // Notify WebSocket clients
+    }
+
+    public List<Item> getAllItems() {
+        return itemRepository.findAll();
     }
 }
