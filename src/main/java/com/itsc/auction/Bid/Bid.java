@@ -23,12 +23,12 @@ public class Bid {
     private Long id;
 
     @NotNull(message = "Auction is required")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "auction_id", nullable = false)
     private Auction auction;
 
     @NotNull(message = "User is required")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

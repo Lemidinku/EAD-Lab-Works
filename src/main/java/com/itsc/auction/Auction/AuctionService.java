@@ -1,12 +1,9 @@
 package com.itsc.auction.Auction;
 
 import com.itsc.auction.Auction.dto.UpdateAuctionDto;
-import com.itsc.auction.Item.Item;
-import com.itsc.auction.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +23,6 @@ public class AuctionService {
     }
 
     public Auction createAuction(Auction auction) {
-        // Additional validations (e.g., check if item is already in an auction)
         auction.setStatus("ONGOING");
         Auction returnedAuction = auctionRepository.save(auction);
         System.out.println("Auction created: " + returnedAuction);
@@ -44,6 +40,15 @@ public class AuctionService {
             if (auctionDetails.getStatus() != null) {
                 auction.setStatus(auctionDetails.getStatus());
             }
+
+            if (auctionDetails.getHighestBidder() != null) {
+                auction.setHighestBidder(auctionDetails.getHighestBidder());
+            }
+
+            if (auctionDetails.getCurrentPrice() != null) {
+                auction.setCurrentPrice(auctionDetails.getCurrentPrice());
+            }
+
             return auctionRepository.save(auction);
         }).orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
     }

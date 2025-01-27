@@ -1,4 +1,3 @@
-// ItemController.java
 package com.itsc.auction.Item;
 
 import org.springframework.beans.factory.annotation.Autowired;
