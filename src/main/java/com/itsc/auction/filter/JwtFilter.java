@@ -1,7 +1,5 @@
 package com.itsc.auction.filter;
 
-import org.springframework.stereotype.Component;
-
 import com.itsc.auction.Utils.JwtUtil;
 
 import jakarta.servlet.Filter;
@@ -37,7 +35,6 @@ public class JwtFilter implements Filter {
         // check if the request path is /auth/login
         Boolean isLogin = httpRequest.getRequestURI().equals("/auth/login");
      
-        System.out.println("Token: " + token);
         if (token == null || !JwtUtil.validateToken(token) || isLogin) {
             httpResponse.sendRedirect("/auth/login"); 
             return;

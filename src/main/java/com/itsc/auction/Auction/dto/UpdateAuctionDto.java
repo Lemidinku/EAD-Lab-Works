@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.itsc.auction.User.User;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +23,7 @@ public class UpdateAuctionDto {
     private BigDecimal currentPrice; // Optional: New current price
 
     private String status;
+
+    private User highestBidder;
 }
 
