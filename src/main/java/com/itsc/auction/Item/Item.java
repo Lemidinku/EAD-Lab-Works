@@ -35,7 +35,7 @@ public class Item {
     @Column(nullable = false)
     private BigDecimal startingPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
