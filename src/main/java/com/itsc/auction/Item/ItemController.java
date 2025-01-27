@@ -26,6 +26,12 @@ public class ItemController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<Item>> getAllItems() {
+        List<Item> items = itemService.getAllItems();
+        return ResponseEntity.ok(items);
+    }
+
     @GetMapping()
     public List<Item> getMyItems(HttpServletRequest request) {
         Claims claims = (Claims) request.getAttribute("user");
@@ -35,8 +41,8 @@ public class ItemController {
 
     // @GetMapping("/{id}")
     // public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-    //     Item item = itemService.getItemById(id);
-    //     return ResponseEntity.ok(item);
+    // Item item = itemService.getItemById(id);
+    // return ResponseEntity.ok(item);
     // }
 
     @PostMapping
@@ -47,7 +53,7 @@ public class ItemController {
         item.setName(createItemDto.getName());
         item.setDescription(createItemDto.getDescription());
         item.setStatus(createItemDto.getStatus());
-        item.setStartingPrice(createItemDto.getStartingPrice()); 
+        item.setStartingPrice(createItemDto.getStartingPrice());
 
         Claims claims = (Claims) request.getAttribute("user");
         String username = claims.getSubject();
@@ -68,7 +74,7 @@ public class ItemController {
         User owner = item.getOwner();
 
         Map<String, Object> response = new HashMap<>();
-        if (!owner.getUsername().equals(username)){
+        if (!owner.getUsername().equals(username)) {
             response.put("error", "User not authenticated.");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
