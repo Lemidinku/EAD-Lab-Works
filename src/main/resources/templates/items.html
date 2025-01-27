@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Item List</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Items</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Starting Price</th>
+                <th>Status</th>
+                <th>Owner</th>
+            </tr>
+        </thead>
+        <tbody id="itemTableBody">
+            <!-- Items will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        // WebSocket setup
+        const socket = new SockJS('/ws');
+        const stompClient = Stomp.over(socket);
+
+        // Function to dynamically render item rows
+        function renderItemRow(item) {
+            const row = `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.name}</td>
+                    <td>${item.description || ''}</td>
+                    <td>${item.startingPrice}</td>
+                    <td>${item.status}</td>
+                    <td>${item.owner.username || 'Unknown'}</td>
+                </tr>
+            `;
+            return row;
+        }
+
+        // Connect to the WebSocket and subscribe
+        stompClient.connect({}, () => {
+            console.log('Connected to WebSocket');
+            stompClient.subscribe('/topic/items', (message) => {
+                const itemEvent = JSON.parse(message.body);
+                const tableBody = document.getElementById('itemTableBody');
+
+                if (itemEvent.eventType === 'CREATE') {
+                    console.log('Received CREATE event:', itemEvent.item);
+                    tableBody.innerHTML += renderItemRow(itemEvent.item);
+                } else if (itemEvent.eventType === 'DELETE') {
+                    const rows = Array.from(tableBody.children);
+                    rows.forEach(row => {
+                        if (row.children[0].innerText === String(itemEvent.item.id)) {
+                            row.remove();
+                        }
+                    });
+                }
+            });
+        });
+
+        // Fetch all items on initial page load
+        fetch('/items/all')
+            .then(response => response.json())
+            .then(items => {
+                const tableBody = document.getElementById('itemTableBody');
+                items.forEach(item => {
+                    tableBody.innerHTML += renderItemRow(item);
+                });
+            })
+            .catch(error => console.error('Error fetching items:', error));
+    </script>
+</body>
+</html>
