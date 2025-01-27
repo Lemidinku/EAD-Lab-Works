@@ -14,6 +14,9 @@ public class AuctionService {
     @Autowired
     private AuctionRepository auctionRepository;
 
+    @Autowired
+    private AuctionWebSocketController auctionWebSocketController;
+
     public List<Auction> getAllAuctions() {
         return auctionRepository.findAll();
     }
@@ -30,27 +33,30 @@ public class AuctionService {
     }
 
     public Auction updateAuction(Long id, UpdateAuctionDto auctionDetails) {
-        return auctionRepository.findById(id).map(auction -> {
-            if (auctionDetails.getStartTime() != null) {
-                auction.setStartTime(auctionDetails.getStartTime());
-            }
-            if (auctionDetails.getEndTime() != null) {
-                auction.setEndTime(auctionDetails.getEndTime());
-            }
-            if (auctionDetails.getStatus() != null) {
-                auction.setStatus(auctionDetails.getStatus());
-            }
+        Auction auction = auctionRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
 
-            if (auctionDetails.getHighestBidder() != null) {
-                auction.setHighestBidder(auctionDetails.getHighestBidder());
-            }
+        if (auctionDetails.getStartTime() != null) {
+            auction.setStartTime(auctionDetails.getStartTime());
+        }
+        if (auctionDetails.getEndTime() != null) {
+            auction.setEndTime(auctionDetails.getEndTime());
+        }
+        if (auctionDetails.getStatus() != null) {
+            auction.setStatus(auctionDetails.getStatus());
+        }
+        if (auctionDetails.getHighestBidder() != null) {
+            auction.setHighestBidder(auctionDetails.getHighestBidder());
+        }
+        if (auctionDetails.getCurrentPrice() != null) {
+            auction.setCurrentPrice(auctionDetails.getCurrentPrice());
+        }
 
-            if (auctionDetails.getCurrentPrice() != null) {
-                auction.setCurrentPrice(auctionDetails.getCurrentPrice());
-            }
+        Auction updatedAuction = auctionRepository.save(auction);
 
-            return auctionRepository.save(auction);
-        }).orElseThrow(() -> new RuntimeException("Auction not found with id: " + id));
+        auctionWebSocketController.notifyAuctionChange("UPDATE", updatedAuction);
+
+        return updatedAuction;
     }
 
     public void deleteAuction(Long id) {

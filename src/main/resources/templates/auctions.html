@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Auction List</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>All Auctions</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Item</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Current Price</th>
+                <th>Highest Bidder</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="auctionTableBody">
+            <!-- Auctions will be dynamically inserted here -->
+        </tbody>
+    </table>
+
+    <script>
+        // WebSocket setup
+        const socket = new SockJS('/ws');
+        const stompClient = Stomp.over(socket);
+
+        // Function to dynamically render auction rows
+        function renderAuctionRow(auction) {
+            const row = `
+                <tr>
+                    <td>${auction.id}</td>
+                    <td>${auction.item.name || 'Unknown'}</td>
+                    <td>${new Date(auction.startTime).toLocaleString()}</td>
+                    <td>${new Date(auction.endTime).toLocaleString()}</td>
+                    <td>${auction.currentPrice}</td>
+                    <td>${auction.highestBidder?.username || 'None'}</td>
+                    <td>${auction.status}</td>
+                </tr>
+            `;
+            return row;
+        }
+
+        // Connect to the WebSocket and subscribe
+        stompClient.connect({}, () => {
+            console.log('Connected to WebSocket');
+            stompClient.subscribe('/topic/auctions', (message) => {
+                const auctionEvent = JSON.parse(message.body);
+                const tableBody = document.getElementById('auctionTableBody');
+
+                if (auctionEvent.eventType === 'CREATE') {
+                    console.log('Received CREATE event:', auctionEvent.auction);
+                    tableBody.innerHTML += renderAuctionRow(auctionEvent.auction);
+                } else if (auctionEvent.eventType === 'UPDATE') {
+                    console.log('Received UPDATE event:', auctionEvent.auction);
+                    const rows = Array.from(tableBody.children);
+                    rows.forEach(row => {
+                        if (row.children[0].innerText === String(auctionEvent.auction.id)) {
+                            row.innerHTML = renderAuctionRow(auctionEvent.auction);
+                        }
+                    });
+                } else if (auctionEvent.eventType === 'DELETE') {
+                    console.log('Received DELETE event:', auctionEvent.auction);
+                    const rows = Array.from(tableBody.children);
+                    rows.forEach(row => {
+                        if (row.children[0].innerText === String(auctionEvent.auction.id)) {
+                            row.remove();
+                        }
+                    });
+                }
+            });
+        });
+
+        // Fetch all auctions on initial page load
+        fetch('/auctions')
+            .then(response => response.json())
+            .then(auctions => {
+                const tableBody = document.getElementById('auctionTableBody');
+                auctions.forEach(auction => {
+                    tableBody.innerHTML += renderAuctionRow(auction);
+                });
+            })
+            .catch(error => console.error('Error fetching auctions:', error));
+    </script>
+</body>
+</html>
