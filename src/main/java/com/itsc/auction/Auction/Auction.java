@@ -7,6 +7,7 @@ import com.itsc.auction.Item.Item;
 import com.itsc.auction.User.User;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Auction {
     private Long id;
 
     @NotNull(message = "Item is required for the auction")
-    @OneToOne(fetch = FetchType.LAZY) 
+    @OneToOne() 
     @JoinColumn(name = "item_id", nullable = false, unique = true)
     private Item item;
 
@@ -39,11 +40,17 @@ public class Auction {
     @Column(nullable = false)
     private BigDecimal currentPrice;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "highest_bidder_id")
     private User highestBidder;
 
     @NotNull(message = "Status is required")
     @Column(nullable = false)
     private String status; // Example values: ONGOING, FINISHED, CANCELLED
+
+    // Validate that startTime is earlier than endTime.
+    @AssertTrue(message = "Start time must be earlier than end time")
+    public boolean isStartTimeBeforeEndTime() {
+        return startTime.isBefore(endTime);
+    }
 }
