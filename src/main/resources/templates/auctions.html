@@ -89,7 +89,7 @@
         });
 
         // Fetch all auctions on initial page load
-        fetch('/auctions-page')
+        fetch('/auctions')
             .then(response => response.json())
             .then(auctions => {
                 const tableBody = document.getElementById('auctionTableBody');
