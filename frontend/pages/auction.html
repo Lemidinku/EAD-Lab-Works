@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidMaster - Auction Details</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/auction.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BidMaster</div>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="signin.html" id="authLink">Sign In</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auction-container">
+            <div class="auction-image">
+                <img id="auctionImage" src="/placeholder.svg" alt="Auction Item">
+            </div>
+            <div class="auction-details">
+                <h1 id="auctionTitle"></h1>
+                <p id="auctionDescription"></p>
+                <div class="auction-info">
+                    <p>Current Bid: <span id="currentBid"></span></p>
+                    <p>Highest Bidder: <span id="highestBidder"></span></p>
+                    <p>Time Left: <span id="timeLeft"></span></p>
+                </div>
+                <form id="bidForm">
+                    <input type="number" id="bidAmount" placeholder="Enter your bid" required>
+                    <button type="submit">Place Bid</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+
+    <script src="../scripts/auction.js"></script>
+</body>
+</html>
+
