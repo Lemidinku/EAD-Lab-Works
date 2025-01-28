@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidMaster - Profile</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BidMaster</div>
+            <ul>
+                <li><a href="home.html">Home</a></li>
+                <li><a href="profile.html" class="active">Profile</a></li>
+                <li><a href="#" id="authLink">Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="profile-container">
+            <h1>My Profile</h1>
+            <div class="profile-info">
+                <img id="profileImage" src="/placeholder.svg?height=150&width=150" alt="Profile Picture">
+                <h2 id="username"></h2>
+                <p id="email"></p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-button active" data-tab="my-items">My Items</button>
+                <button class="tab-button" data-tab="my-auctions">My Auctions</button>
+            </div>
+
+            <div id="my-items" class="tab-content active">
+                <h3>My Items</h3>
+                <div id="itemsGrid" class="items-grid"></div>
+                <button id="createItemBtn" class="create-button">Create New Item</button>
+            </div>
+
+            <div id="my-auctions" class="tab-content">
+                <h3>My Auctions</h3>
+                <div id="auctionsGrid" class="auctions-grid"></div>
+                <button id="createAuctionBtn" class="create-button">Create New Auction</button>
+            </div>
+        </div>
+    </main>
+
+    <div id="itemModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Item</h2>
+            <form id="createItemForm">
+                <input type="text" id="itemName" placeholder="Item Name" required>
+                <textarea id="itemDescription" placeholder="Item Description" required></textarea>
+                <input type="file" id="itemImage" accept="image/*" required>
+                <button type="submit">Create Item</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="auctionModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Auction</h2>
+            <form id="createAuctionForm">
+                <select id="auctionItem" required>
+                    <option value="">Select an item</option>
+                </select>
+                <input type="number" id="startingBid" placeholder="Starting Bid" required>
+                <input type="datetime-local" id="endTime" required>
+                <button type="submit">Create Auction</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+
+    <script src="../scripts/profile.js"></script>
+</body>
+</html>
+
