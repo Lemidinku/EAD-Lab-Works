@@ -303,26 +303,25 @@
           auctionGrid.innerHTML = auctions
             .map(
               (auction) => `
-          <div class="auction-card">
-            <img src="https://picsum.photos/id/24/200/200" alt="${
-              auction.item.name
-            }">
-            <div class="auction-card-content">
-              <h3>${auction.item.name}</h3>
-              <p>${auction.item.description}</p>
-              <p>Starting Price: $${auction.item.startingPrice}</p>
-              <p>Current Price: $${auction.currentPrice}</p>
-              <p>Status: ${auction.status}</p>
-              <p>Ends: ${new Date(auction.endTime).toLocaleString()}</p>
-              <a href="/pages/auction?id=${
-                auction.id
-              }" class="bid-button">View Auction</a>
-            </div>
-          </div>
-        `
+              <div class="auction-card">
+                <img src="https://picsum.photos/id/24/300/200" alt="${auction.item.name}">
+                <div class="auction-card-content">
+                  <h3>${auction.item.name}</h3>
+                  <p>${auction.item.description}</p>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                    <span style="color: var(--primary-color); font-weight: bold;">Start: $${auction.item.startingPrice}</span>
+                    <span style="color: var(--secondary-color); font-weight: bold;">Current: $${auction.currentPrice}</span>
+                  </div>
+                  <p style="margin-top: 5px; font-size: 0.9rem; color: #555;">Status: ${auction.status}</p>
+                  <p style="font-size: 0.9rem; color: #555;">Ends: ${new Date(auction.endTime).toLocaleString()}</p>
+                  <a href="/pages/auction?id=${auction.id}" class="bid-button" style="display: block; text-align: center; margin-top: 10px;">View Auction</a>
+                </div>
+              </div>
+            `
             )
             .join("");
         }
+        
 
         function displayMyBids(bids) {
           const myBidsGrid = document.getElementById("myBidsGrid");

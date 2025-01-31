@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BidMaster - Sign Up</title>
-    <link rel="stylesheet" href="../styles/global.css" />
-    <link rel="stylesheet" href="../styles/auth.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -31,80 +29,10 @@
         font-family: "Poppins", sans-serif;
         background-color: var(--background-color);
         color: var(--text-color);
-        line-height: 1.6;
-      }
-
-      header {
-        background-color: var(--primary-color);
-        padding: 1rem 0;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-
-      nav {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .logo {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #fff;
-      }
-
-      nav ul {
-        display: flex;
-        list-style: none;
-      }
-
-      nav ul li {
-        margin-left: 2rem;
-      }
-
-      nav ul li a {
-        color: #fff;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
-      }
-
-      nav ul li a:hover,
-      nav ul li a.active {
-        color: var(--secondary-color);
-      }
-
-      main {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 2rem;
-      }
-
-      footer {
-        background-color: var(--primary-color);
-        color: #fff;
-        text-align: center;
-        padding: 1rem 0;
-        margin-top: 2rem;
-      }
-
-      @media (max-width: 768px) {
-        nav {
-          flex-direction: column;
-        }
-
-        nav ul {
-          margin-top: 1rem;
-        }
-
-        nav ul li {
-          margin-left: 1rem;
-          margin-right: 1rem;
-        }
+        height: 100vh;
       }
 
       .container {
@@ -117,7 +45,7 @@
         background-color: var(--card-background);
         padding: 2rem;
         border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       }
 
       .auth-form h2 {
@@ -128,7 +56,7 @@
 
       .input-group {
         position: relative;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2rem;
       }
 
       .input-group i {
@@ -141,7 +69,7 @@
 
       .input-group input {
         width: 100%;
-        padding: 0.75rem 1rem 0.75rem 3rem;
+        padding: 0.8rem 1rem 0.8rem 3rem;
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 1rem;
@@ -155,7 +83,7 @@
 
       button {
         width: 100%;
-        padding: 0.75rem;
+        padding: 0.9rem;
         background-color: var(--primary-color);
         color: #fff;
         border: none;
@@ -163,11 +91,12 @@
         font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: background-color 0.3s ease, transform 0.1s ease;
       }
 
       button:hover {
         background-color: #2980b9;
+        transform: scale(1.02);
       }
 
       .auth-link {
@@ -239,18 +168,18 @@
     <script>
       signupForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-
+        
         const username = document.getElementById("username").value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
         const confirmPassword =
-          document.getElementById("confirmPassword").value;
-
+        document.getElementById("confirmPassword").value;
+        
         if (password !== confirmPassword) {
           alert("Passwords do not match");
           return;
         }
-
+        
         try {
           const response = await fetch("http://localhost:8080/auth/signup", {
             method: "POST",
@@ -274,5 +203,5 @@
         }
       });
     </script>
-  </body>
-</html>
+        </body>
+      </html>
