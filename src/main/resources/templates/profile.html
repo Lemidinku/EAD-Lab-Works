@@ -493,11 +493,12 @@
             .map(
               (auction) => `
             <div class="auction-card">
-                <h4>${auction.item.name}</h4>
-                <p>Current Bid: $${auction.currentPrice}</p>
-                <p>End Time: ss ${new Date(
-                  auction.endTime
-                ).toLocaleString()}</p>
+                <h4>${auction.item?.name}</h4>
+                <p>Current Bid: $${auction?.currentPrice}</p>
+                <p>Highest Bidder: ${
+                  auction?.higgestBidder?.username || "No bids yet."
+                }</p>
+                <p>End Time:${new Date(auction.endTime).toLocaleString()}</p>
             </div>
         `
             )
