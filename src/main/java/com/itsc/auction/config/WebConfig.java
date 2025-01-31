@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<JwtFilter> jwtFilter() {
         FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtFilter());
-        registrationBean.addUrlPatterns("/items/*", "/auctions/*", "/bids/*"); 
+        registrationBean.addUrlPatterns("/items/*", "/bids/*");
         return registrationBean;
     }
 }

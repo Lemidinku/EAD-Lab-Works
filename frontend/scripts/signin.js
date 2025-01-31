@@ -18,10 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem("isLoggedIn", "true");
-                localStorage.setItem("user", JSON.stringify(data.user));
+                localStorage.setItem("token", data.token);
                 alert("Sign-in successful");
-                window.location.href = "../index.html"; // Redirect to dashboard or another page
+                window.location.href = "../pages/home.html"; 
             } else {
                 const errorData = await response.json();
                 alert(`Sign-in failed: ${errorData.message}`);
