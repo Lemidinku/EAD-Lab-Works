@@ -388,13 +388,10 @@
             displayUserProfile(data);
           })
           .catch((error) => {
-            displayUserProfile(data);
             console.error("Error fetching user profile:", error);
             alert("An error occurred while fetching the user profile.");
           });
 
-        // Display user's items and auctions
-        //displayUserItems(dummyItems);
         console.log("Token:", token);
 
         // Fetch user items
@@ -459,8 +456,9 @@
         createAuctionForm.addEventListener("submit", handleCreateAuction);
 
         function displayUserProfile(user) {
-          document.getElementById("username").textContent = "user.username";
-          document.getElementById("email").textContent = "user.email";
+          console.log("user", user);
+          document.getElementById("username").textContent = user.username;
+          document.getElementById("email").textContent = user.email;
           document.getElementById("profileImage").src =
             "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
         }
