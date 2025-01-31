@@ -251,12 +251,14 @@
         // Update auth link
         if (token) {
           authLink.textContent = "Sign Out";
-          authLink.href = "#";
+          authLink.href = "index";
           authLink.addEventListener("click", (e) => {
             e.preventDefault();
             localStorage.removeItem("token");
-            window.location.reload();
+            window.location.href = "index";
           });
+        }else {
+          window.location.href = "login"; 
         }
 
         // Fetch all auctions
