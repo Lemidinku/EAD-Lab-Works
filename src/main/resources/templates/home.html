@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BidMaster - Home</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f4f4f4;
+        --text-color: #333;
+        --card-background: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 2rem;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: var(--secondary-color);
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      footer {
+        background-color: var(--primary-color);
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+        }
+
+        nav ul {
+          margin-top: 1rem;
+        }
+
+        nav ul li {
+          margin-left: 1rem;
+          margin-right: 1rem;
+        }
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--primary-color);
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        color: #666;
+      }
+
+      .auctions,
+      .my-bids {
+        margin-bottom: 3rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .auction-grid,
+      .my-bids-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      .auction-card,
+      .bid-card {
+        background-color: var(--card-background);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+      }
+
+      .auction-card:hover,
+      .bid-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .auction-card img,
+      .bid-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .auction-card-content,
+      .bid-card-content {
+        padding: 1rem;
+      }
+
+      .auction-card h3,
+      .bid-card h3 {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .auction-card p,
+      .bid-card p {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
+
+      .bid-button {
+        display: inline-block;
+        background-color: var(--secondary-color);
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+      }
+
+      .bid-button:hover {
+        background-color: #27ae60;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .auction-grid,
+        .my-bids-grid {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">BidMaster</div>
+        <ul>
+          <li><a href="pages/home" class="active">Home</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="signin.html" id="authLink">Sign In</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Welcome to BidMaster</h1>
+        <p>Discover unique items and place your bids!</p>
+      </section>
+
+      <section class="auctions">
+        <h2>Active Auctions</h2>
+        <div id="auctionGrid" class="auction-grid"></div>
+      </section>
+
+      <section class="my-bids">
+        <h2>My Bids</h2>
+        <div id="myBidsGrid" class="my-bids-grid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const auctionGrid = document.getElementById("auctionGrid");
+        const myBidsGrid = document.getElementById("myBidsGrid");
+        const authLink = document.getElementById("authLink");
+
+        // Check if user is logged in
+        const token = localStorage.getItem("token");
+
+        // Update auth link
+        if (token) {
+          authLink.textContent = "Sign Out";
+          authLink.href = "#";
+          authLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem("token");
+            window.location.reload();
+          });
+        }
+
+        // Fetch all auctions
+        fetch("http://localhost:8080/auctions", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            displayAuctions(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching auctions:", error);
+          });
+
+        // Fetch user's bids if logged in
+        // if (token) {
+        //   fetch("http://localhost:8080/my-bids", {
+        //     method: "GET",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "Authorization": `Bearer ${token}`
+        //     }
+        //   })
+        //   .then(response => response.json())
+        //   .then(data => {
+        //     displayMyBids(data);
+        //   })
+        //   .catch(error => {
+        //     console.error("Error fetching my bids:", error);
+        //   });
+        // } else {
+        //   myBidsGrid.innerHTML = "<p>Please sign in to view your bids.</p>";
+        // }
+
+        function displayAuctions(auctions) {
+          const auctionGrid = document.getElementById("auctionGrid");
+          auctionGrid.innerHTML = auctions
+            .map(
+              (auction) => `
+          <div class="auction-card">
+            <img src="https://picsum.photos/id/24/200/200" alt="${
+              auction.item.name
+            }">
+            <div class="auction-card-content">
+              <h3>${auction.item.name}</h3>
+              <p>${auction.item.description}</p>
+              <p>Starting Price: $${auction.item.startingPrice}</p>
+              <p>Current Price: $${auction.currentPrice}</p>
+              <p>Status: ${auction.status}</p>
+              <p>Ends: ${new Date(auction.endTime).toLocaleString()}</p>
+              <a href="/pages/auction?id=${
+                auction.id
+              }" class="bid-button">View Auction</a>
+            </div>
+          </div>
+        `
+            )
+            .join("");
+        }
+
+        function displayMyBids(bids) {
+          const myBidsGrid = document.getElementById("myBidsGrid");
+          myBidsGrid.innerHTML = "";
+          bids.forEach((bid) => {
+            const bidElement = document.createElement("div");
+            bidElement.className = "bid";
+            bidElement.innerHTML = `
+        <h3>${bid.auction.item.name}</h3>
+        <p>Bid Amount: $${bid.amount}</p>
+        <p>Status: ${bid.status}</p>
+      `;
+            myBidsGrid.appendChild(bidElement);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

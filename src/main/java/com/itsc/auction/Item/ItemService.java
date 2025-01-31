@@ -33,7 +33,6 @@ public class ItemService {
     }
 
     public Item createItem(Item item) {
-        System.out.println("createItem" + item);
         Item createdItem = itemRepository.save(item);
         itemWebSocketController.notifyItemChange("CREATE", createdItem); // Notify WebSocket clients
         return createdItem;

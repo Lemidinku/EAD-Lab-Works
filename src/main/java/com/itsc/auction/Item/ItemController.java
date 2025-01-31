@@ -47,7 +47,6 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<Item> createItem(@RequestBody CreateItemDto createItemDto, HttpServletRequest request) {
-        System.out.println(createItemDto);
         Item item = new Item();
 
         item.setName(createItemDto.getName());

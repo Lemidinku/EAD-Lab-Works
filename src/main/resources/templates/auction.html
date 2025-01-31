@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BidMaster - Auction Details</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f4f4f4;
+        --text-color: #333;
+        --card-background: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 2rem;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: var(--secondary-color);
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      footer {
+        background-color: var(--primary-color);
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+        }
+
+        nav ul {
+          margin-top: 1rem;
+        }
+
+        nav ul li {
+          margin-left: 1rem;
+          margin-right: 1rem;
+        }
+      }
+
+      .auction-container {
+        display: flex;
+        background-color: var(--card-background);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .auction-image {
+        flex: 1;
+        max-width: 50%;
+      }
+
+      .auction-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .auction-details {
+        flex: 1;
+        padding: 2rem;
+      }
+
+      .auction-details h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .auction-details p {
+        margin-bottom: 1rem;
+      }
+
+      .auction-info {
+        background-color: #f0f0f0;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+      }
+
+      .auction-info p {
+        margin-bottom: 0.5rem;
+      }
+
+      #bidForm {
+        display: flex;
+        gap: 1rem;
+      }
+
+      #bidAmount {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      #bidForm button {
+        padding: 0.5rem 1rem;
+        background-color: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #bidForm button:hover {
+        background-color: #27ae60;
+      }
+
+      @media (max-width: 768px) {
+        .auction-container {
+          flex-direction: column;
+        }
+
+        .auction-image {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">BidMaster</div>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profile.html">Profile</a></li>
+          <li><a href="signin.html" id="authLink">Sign In</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <button onclick="window.history.back()">Back</button>
+      <div class="auction-container">
+        <div class="auction-image">
+          <img
+            id="auctionImage"
+            src="/placeholder.svg"
+            alt="Auction Item"
+            style="padding: 10px"
+          />
+        </div>
+        <div class="auction-details">
+          <h1 id="auctionTitle"></h1>
+          <p id="auctionDescription"></p>
+          <div class="auction-info">
+            <p>Current Bid: <span id="currentBid"></span></p>
+            <p>Highest Bidder: <span id="highestBidder"></span></p>
+            <p>Time Left: <span id="timeLeft"></span></p>
+          </div>
+          <form id="bidForm">
+            <input
+              type="number"
+              id="bidAmount"
+              placeholder="Enter your bid"
+              required
+            />
+            <button type="submit">Place Bid</button>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const authLink = document.getElementById("authLink");
+        const bidForm = document.getElementById("bidForm");
+        const auctionId = new URLSearchParams(window.location.search).get("id");
+
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        const token = localStorage.getItem("token");
+        console.log("Token:", token);
+
+        // Update auth link
+        if (isLoggedIn) {
+          authLink.textContent = "Sign Out";
+          authLink.href = "#";
+          authLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.setItem("isLoggedIn", "false");
+            window.location.href = "pages/login";
+          });
+        }
+
+        if (auctionId) {
+          fetch(`http://localhost:8080/auctions/${auctionId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Auction not found");
+              }
+              return response.json();
+            })
+            .then((auction) => {
+              displayAuctionDetails(auction);
+            })
+            .catch((error) => {
+              console.error("Error fetching auction:", error);
+              alert("Auction not found.");
+              window.location.href = "../index.html";
+            });
+        } else {
+          alert("Invalid auction ID.");
+          window.location.href = "pages/home";
+        }
+
+        // Set up bid form
+        bidForm.addEventListener("submit", handleBidSubmit);
+
+        function displayAuctionDetails(auction) {
+          document.getElementById("auctionImage").src =
+            "https://picsum.photos/id/24/200/200";
+          document.getElementById("auctionTitle").textContent =
+            auction.item.name;
+          document.getElementById("auctionDescription").textContent =
+            auction.item.description;
+          document.getElementById(
+            "currentBid"
+          ).textContent = `$${auction.currentPrice}`;
+          document.getElementById("highestBidder").textContent =
+            auction.highestBidder.username || "No bids yet";
+          updateTimeLeft(auction.endTime);
+        }
+
+        function updateTimeLeft(endTime) {
+          const timeLeftElement = document.getElementById("timeLeft");
+          const updateTimer = () => {
+            const now = new Date();
+            const end = new Date(endTime);
+            const timeLeft = end - now;
+
+            if (timeLeft <= 0) {
+              timeLeftElement.textContent = "Auction ended";
+              clearInterval(timerInterval);
+              return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+              (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            const minutes = Math.floor(
+              (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            timeLeftElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+          };
+
+          updateTimer();
+          const timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        async function handleBidSubmit(e) {
+          e.preventDefault();
+
+          if (!token) {
+            alert("Please sign in to place a bid.");
+            return;
+          }
+
+          const bidAmount = Number.parseFloat(
+            document.getElementById("bidAmount").value
+          );
+          const currentBid = Number.parseFloat(
+            document.getElementById("currentBid").textContent.slice(1)
+          );
+
+          if (bidAmount <= currentBid) {
+            alert("Your bid must be higher than the current bid.");
+            return;
+          }
+
+          await placeBid(auctionId, bidAmount);
+        }
+      });
+
+      async function placeBid(auctionId, bidAmount) {
+        try {
+          const response = await fetch("http://localhost:8080/bids", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({ auctionId, bidAmount }),
+          });
+
+          if (response.ok) {
+            alert("Bid placed successfully!");
+            window.location.reload();
+          } else {
+            const errorData = await response.json();
+            alert(`Bid failed: ${errorData.message}`);
+          }
+        } catch (error) {
+          console.error("Error placing bid:", error);
+          alert("An error occurred while placing the bid.");
+        }
+      }
+    </script>
+  </body>
+</html>

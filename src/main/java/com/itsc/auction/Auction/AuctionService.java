@@ -28,7 +28,6 @@ public class AuctionService {
     public Auction createAuction(Auction auction) {
         auction.setStatus("ONGOING");
         Auction returnedAuction = auctionRepository.save(auction);
-        System.out.println("Auction created: " + returnedAuction);
         return returnedAuction;
     }
 

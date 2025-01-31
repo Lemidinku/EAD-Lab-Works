@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BidMaster - Profile</title>
+    <link rel="stylesheet" href="../styles/global.css" />
+    <link rel="stylesheet" href="../styles/profile.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f4f4f4;
+        --text-color: #333;
+        --card-background: #fff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
+
+      nav ul li {
+        margin-left: 2rem;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
+
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: var(--secondary-color);
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 2rem;
+      }
+
+      footer {
+        background-color: var(--primary-color);
+        color: #fff;
+        text-align: center;
+        padding: 1rem 0;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          flex-direction: column;
+        }
+
+        nav ul {
+          margin-top: 1rem;
+        }
+
+        nav ul li {
+          margin-left: 1rem;
+          margin-right: 1rem;
+        }
+      }
+      .profile-container {
+        background-color: var(--card-background);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+      }
+
+      .profile-container h1 {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+      }
+
+      .profile-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .profile-info img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 1rem;
+      }
+
+      .profile-info h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .profile-info p {
+        color: #666;
+      }
+
+      .tabs {
+        display: flex;
+        margin-bottom: 1rem;
+      }
+
+      .tab-button {
+        padding: 0.5rem 1rem;
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: 5px 5px 0 0;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .tab-button.active {
+        background-color: var(--primary-color);
+        color: #fff;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .items-grid,
+      .auctions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .item-card,
+      .auction-card {
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        padding: 1rem;
+      }
+
+      .create-button {
+        padding: 0.5rem 1rem;
+        background-color: var(--secondary-color);
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .create-button:hover {
+        background-color: #27ae60;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background-color: var(--card-background);
+        margin: 10% auto;
+        padding: 2rem;
+        border-radius: 10px;
+        width: 80%;
+        max-width: 500px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">BidMaster</div>
+        <ul>
+          <li><a href="home.html">Home</a></li>
+          <li><a href="profile.html" class="active">Profile</a></li>
+          <li><a href="#" id="authLink">Sign Out</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <div class="profile-container">
+        <h1>My Profile</h1>
+        <div class="profile-info">
+          <img
+            id="profileImage"
+            src="/placeholder.svg?height=150&width=150"
+            alt="Profile Picture"
+          />
+          <h2 id="username"></h2>
+          <p id="email"></p>
+        </div>
+
+        <div class="tabs">
+          <button class="tab-button active" data-tab="my-items">
+            My Items
+          </button>
+          <button class="tab-button" data-tab="my-auctions">My Auctions</button>
+        </div>
+
+        <div id="my-items" class="tab-content active">
+          <h3>My Items</h3>
+          <div id="itemsGrid" class="items-grid"></div>
+          <button id="createItemBtn" class="create-button">
+            Create New Item
+          </button>
+        </div>
+
+        <div id="my-auctions" class="tab-content">
+          <h3>My Auctions</h3>
+          <div id="auctionsGrid" class="auctions-grid"></div>
+          <button id="createAuctionBtn" class="create-button">
+            Create New Auction
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <div id="itemModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create New Item</h2>
+        <form id="createItemForm">
+          <input type="text" id="itemName" placeholder="Item Name" required />
+          <textarea
+            id="itemDescription"
+            placeholder="Item Description"
+            required
+          ></textarea>
+          <input type="file" id="itemImage" accept="image/*" required />
+          <button type="submit">Create Item</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="auctionModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create New Auction</h2>
+        <form id="createAuctionForm">
+          <select id="auctionItem" required>
+            <option value="">Select an item</option>
+          </select>
+          <input
+            type="number"
+            id="startingBid"
+            placeholder="Starting Bid"
+            required
+          />
+          <input type="datetime-local" id="endTime" required />
+          <button type="submit">Create Auction</button>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const authLink = document.getElementById("authLink");
+        const tabButtons = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
+        const createItemBtn = document.getElementById("createItemBtn");
+        const createAuctionBtn = document.getElementById("createAuctionBtn");
+        const itemModal = document.getElementById("itemModal");
+        const auctionModal = document.getElementById("auctionModal");
+        const createItemForm = document.getElementById("createItemForm");
+        const createAuctionForm = document.getElementById("createAuctionForm");
+
+        // Check if user is logged in
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        if (!isLoggedIn) {
+          window.location.href = "signin.html";
+        }
+
+        // Display user profile
+        displayUserProfile(dummyUser);
+
+        // Display user's items and auctions
+        displayUserItems(dummyItems);
+        displayUserAuctions(dummyAuctions);
+
+        // Set up event listeners
+        authLink.addEventListener("click", handleSignOut);
+        tabButtons.forEach((button) =>
+          button.addEventListener("click", handleTabClick)
+        );
+        createItemBtn.addEventListener(
+          "click",
+          () => (itemModal.style.display = "block")
+        );
+        createAuctionBtn.addEventListener(
+          "click",
+          () => (auctionModal.style.display = "block")
+        );
+        document.querySelectorAll(".close").forEach((closeBtn) => {
+          closeBtn.addEventListener("click", () => {
+            itemModal.style.display = "none";
+            auctionModal.style.display = "none";
+          });
+        });
+        createItemForm.addEventListener("submit", handleCreateItem);
+        createAuctionForm.addEventListener("submit", handleCreateAuction);
+
+        function displayUserProfile(user) {
+          document.getElementById("username").textContent = user.username;
+          document.getElementById("email").textContent = user.email;
+          if (user.profileImage) {
+            document.getElementById("profileImage").src = user.profileImage;
+          }
+        }
+
+        function displayUserItems(items) {
+          const itemsGrid = document.getElementById("itemsGrid");
+          itemsGrid.innerHTML = items
+            .map(
+              (item) => `
+            <div class="item-card">
+                <h4>${item.name}</h4>
+                <p>${item.description}</p>
+            </div>
+        `
+            )
+            .join("");
+
+          // Populate auction item select
+          const auctionItemSelect = document.getElementById("auctionItem");
+          auctionItemSelect.innerHTML = items
+            .map(
+              (item) => `
+            <option value="${item.id}">${item.name}</option>
+        `
+            )
+            .join("");
+        }
+
+        function displayUserAuctions(auctions) {
+          const auctionsGrid = document.getElementById("auctionsGrid");
+          auctionsGrid.innerHTML = auctions
+            .map(
+              (auction) => `
+            <div class="auction-card">
+                <h4>${auction.item.name}</h4>
+                <p>Current Bid: $${auction.currentBid}</p>
+                <p>End Time: ${new Date(auction.endTime).toLocaleString()}</p>
+            </div>
+        `
+            )
+            .join("");
+        }
+
+        function handleSignOut(e) {
+          e.preventDefault();
+          localStorage.removeItem("token");
+          localStorage.setItem("isLoggedIn", "false");
+          window.location.href = "../index.html";
+        }
+
+        function handleTabClick(e) {
+          const tabId = e.target.dataset.tab;
+          tabButtons.forEach((button) => button.classList.remove("active"));
+          tabContents.forEach((content) => content.classList.remove("active"));
+          e.target.classList.add("active");
+          document.getElementById(tabId).classList.add("active");
+        }
+
+        function handleCreateItem(e) {
+          e.preventDefault();
+          const name = document.getElementById("itemName").value;
+          const description = document.getElementById("itemDescription").value;
+          const newItem = { id: Date.now(), name, description };
+          dummyItems.push(newItem);
+          displayUserItems(dummyItems);
+          itemModal.style.display = "none";
+          createItemForm.reset();
+          alert("Item created successfully!");
+        }
+
+        function handleCreateAuction(e) {
+          e.preventDefault();
+          const itemId = document.getElementById("auctionItem").value;
+          const startingBid = document.getElementById("startingBid").value;
+          const endTime = document.getElementById("endTime").value;
+          const item = dummyItems.find(
+            (item) => item.id === Number.parseInt(itemId)
+          );
+          const newAuction = {
+            id: Date.now(),
+            item: item,
+            currentBid: startingBid,
+            endTime: endTime,
+          };
+          dummyAuctions.push(newAuction);
+          displayUserAuctions(dummyAuctions);
+          auctionModal.style.display = "none";
+          createAuctionForm.reset();
+          alert("Auction created successfully!");
+        }
+      });
+
+      // Dummy data
+      const dummyUser = {
+        username: "JaneSmith",
+        email: "jane.smith@example.com",
+        profileImage: "https://picsum.photos/id/64/150/150",
+      };
+
+      const dummyItems = [
+        {
+          id: 1,
+          name: "Antique Clock",
+          description: "A beautiful antique clock from the 18th century.",
+        },
+        {
+          id: 2,
+          name: "Vintage Camera",
+          description: "A fully functional vintage camera from the 1960s.",
+        },
+      ];
+
+      const dummyAuctions = [
+        {
+          id: 1,
+          item: { name: "Antique Clock" },
+          currentBid: 100,
+          endTime: "2025-02-20T14:00:00Z",
+        },
+        {
+          id: 2,
+          item: { name: "Vintage Camera" },
+          currentBid: 50,
+          endTime: "2025-02-22T16:30:00Z",
+        },
+      ];
+    </script>
+  </body>
+</html>

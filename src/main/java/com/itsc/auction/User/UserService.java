@@ -13,7 +13,6 @@ public class UserService {
     private BCryptPasswordEncoder passwordEncoder;
     
     public User addUser(User user){
-        System.out.println("addUser");
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
 
@@ -46,7 +45,6 @@ public class UserService {
     }
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {
-        System.out.println(encodedPassword);
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 

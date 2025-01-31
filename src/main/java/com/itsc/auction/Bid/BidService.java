@@ -17,10 +17,6 @@ public class BidService {
     private BidRepository bidRepository;
 
     public Bid placeBid(Auction auction, User user, BigDecimal bidAmount) {
-        
-        if (auction.getCurrentPrice().compareTo(bidAmount) >= 0) {
-            throw new InvalidBidException("Bid amount must be greater than the current price");
-        }
         Bid bid = new Bid();
         bid.setAuction(auction);
         bid.setUser(user);
