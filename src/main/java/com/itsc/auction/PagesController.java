@@ -27,5 +27,11 @@ public class PagesController {
     public String viewAuctionPage() { // to show auction details
         return "auction";
     }
+
+    @GetMapping("/profile")
+    public String viewProfilePage() { // to show auction details
+        return "profile";
+    }
+
 }
 
