@@ -1,139 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BidMaster - Online Auction Platform</title>
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BidMaster - Online Auction Platform</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
-    :root {
-      --primary-color: #3498db;
-      --secondary-color: #2ecc71;
-      --background-color: #f4f4f4;
-      --text-color: #333;
-      --card-background: #fff;
-      --nav-background: #333;
-    }
+      :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --background-color: #f4f4f4;
+        --text-color: #333;
+        --card-background: #fff;
+        --nav-background: #333;
+      }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-    body {
-      font-family: "Poppins", sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      line-height: 1.6;
-    }
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        line-height: 1.6;
+      }
 
-    header {
-      background-color: var(--primary-color);
-      padding: 1rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+      header {
+        background-color: var(--primary-color);
+        padding: 1rem 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-    }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
 
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #fff;
-    }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+      }
 
-    nav ul {
-      display: flex;
-      list-style: none;
-    }
+      nav ul {
+        display: flex;
+        list-style: none;
+      }
 
-    nav ul li {
-      margin-left: 2rem;
-    }
+      nav ul li {
+        margin-left: 2rem;
+      }
 
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s ease;
+      }
 
-    nav ul li a:hover,
-    nav ul li a.active {
-      color: var(--secondary-color);
-    }
+      nav ul li a:hover,
+      nav ul li a.active {
+        color: var(--secondary-color);
+      }
 
-    .hero {
-      text-align: center;
-      padding: 5rem 2rem;
-      color: var(--text-color);
-    }
+      .hero {
+        text-align: center;
+        padding: 5rem 2rem;
+        color: var(--text-color);
+      }
 
-    .hero h1 {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-    }
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
 
-    .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 2rem;
-    }
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
 
-    .cta-button {
-      background-color: var(--secondary-color);
-      color: var(--text-color);
-      padding: 1rem 2rem;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
+      .cta-button {
+        background-color: var(--secondary-color);
+        color: var(--text-color);
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
 
-    .cta-button:hover {
-      background-color: #219653;
-    }
+      .cta-button:hover {
+        background-color: #219653;
+      }
 
-    footer {
+      footer {
         background-color: var(--primary-color);
         color: #fff;
         text-align: center;
         padding: 1rem 0;
         margin-top: 2rem;
       }
-  </style>
-</head>
-<body>
-  <header>
-    <nav>
-      <div class="logo">BidMaster</div>
-      <ul>
-        <li><a href="home">Home</a></li>
-        <li><a href="profile">Profile</a></li>
-        <li><a href="login">Sign In</a></li>
-      </ul>
-    </nav>
-  </header>
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="logo">BidMaster</div>
+        <ul>
+          <li><a href="home">Home</a></li>
+          <li><a href="profile">Profile</a></li>
+          <li><a href="login">Sign In</a></li>
+        </ul>
+      </nav>
+    </header>
 
-  <main>
-    <section class="hero">
-      <h1>Welcome to BidMaster</h1>
-      <p>Discover unique items and start bidding today!</p>
-      <a href="pages/signin.html" class="cta-button">Get Started</a>
-    </section>
-  </main>
+    <main>
+      <section class="hero">
+        <h1>Welcome to BidMaster</h1>
+        <p>Discover unique items and start bidding today!</p>
+        <a href="pages/login" class="cta-button">Get Started</a>
+      </section>
+    </main>
 
-  <footer>
-    <p>&copy; 2025 BidMaster. All rights reserved.</p>
-  </footer>
-</body>
+    <footer>
+      <p>&copy; 2025 BidMaster. All rights reserved.</p>
+    </footer>
+  </body>
 </html>
