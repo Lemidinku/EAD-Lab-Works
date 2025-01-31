@@ -25,6 +25,13 @@ public class AuctionService {
         return auctionRepository.findById(id);
     }
 
+    public List<Auction> getMyAuctions(String username) {
+        List<Auction> auctions = auctionRepository.findByItemOwnerUsername(username);
+        return auctions;
+
+
+    }
+
     public Auction createAuction(Auction auction) {
         auction.setStatus("ONGOING");
         Auction returnedAuction = auctionRepository.save(auction);

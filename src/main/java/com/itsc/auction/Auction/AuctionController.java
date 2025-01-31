@@ -32,6 +32,13 @@ public class AuctionController {
         return auctionService.getAllAuctions();
     }
 
+    @GetMapping("/myauctions")
+    public List<Auction> getMyAuctions(HttpServletRequest request) {
+        Claims claims = (Claims) request.getAttribute("user");
+        String username = claims.getSubject();
+        return auctionService.getMyAuctions(username);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Auction> getAuctionById(@PathVariable Long id) {
         Optional<Auction> auction = auctionService.getAuctionById(id);

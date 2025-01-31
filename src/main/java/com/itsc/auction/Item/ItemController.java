@@ -39,11 +39,6 @@ public class ItemController {
         return itemService.getMyItems(username); // currently this only returns items for a specific user
     }
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Item> getItemById(@PathVariable Long id) {
-    // Item item = itemService.getItemById(id);
-    // return ResponseEntity.ok(item);
-    // }
 
     @PostMapping
     public ResponseEntity<Item> createItem(@RequestBody CreateItemDto createItemDto, HttpServletRequest request) {

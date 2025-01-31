@@ -364,80 +364,77 @@
         // Check if user is logged in
         const token = localStorage.getItem("token");
 
-            // Update auth link
-            if (token) {
-                authLink.textContent = "Sign Out";
-                authLink.href = "#";
-                authLink.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem("token");
-                    window.location.href = "../index.html";
-                });
-            }
-
-
-             // Fetch user profile
-             fetch("http://localhost:8080/auth/profile", {
-              method: "GET",
-              headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`
-              }
-          })
-          .then(response => response.json())
-          .then(data => {
-              displayUserProfile(data);
-            })
-            .catch(error => {
-            displayUserProfile(data);
-              console.error("Error fetching user profile:", error);
-              alert("An error occurred while fetching the user profile.");
+        // Update auth link
+        if (token) {
+          authLink.textContent = "Sign Out";
+          authLink.href = "#";
+          authLink.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.removeItem("token");
+            window.location.href = "../index.html";
           });
+        }
 
-      
+        // Fetch user profile
+        fetch("http://localhost:8080/auth/profile", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            displayUserProfile(data);
+          })
+          .catch((error) => {
+            displayUserProfile(data);
+            console.error("Error fetching user profile:", error);
+            alert("An error occurred while fetching the user profile.");
+          });
 
         // Display user's items and auctions
         //displayUserItems(dummyItems);
         console.log("Token:", token);
 
-                    // Fetch user items
-                    fetch("http://localhost:8080/items", {
-                      method: "GET",
-                      headers: {
-                          "Content-Type": "application/json",
-                          "Authorization": `Bearer ${token}`
-                      }
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                      console.log("data" ,data);
-                      displayUserItems(data);
-                    })
-                    .catch(error => {
-                    console.log("error" ,response);
-                      console.error("Error fetching user items:", error);
-                      alert("An error occurred while fetching the user items.");
-                  });
+        // Fetch user items
+        fetch("http://localhost:8080/items", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            displayUserItems(data);
+          })
+          .catch((error) => {
+            console.log("error", response);
+            console.error("Error fetching user items:", error);
+            alert("An error occurred while fetching the user items.");
+          });
 
         //displayUserAuctions(dummyAuctions);
 
-        fetch("http://localhost:8080/auctions", {
+        fetch("http://localhost:8080/auctions/myauctions", {
           method: "GET",
           headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-          }
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log("data" ,data);
-          displayUserAuctions(data);
-      })
-      .catch(error => {
-          console.log('error', response)
-          console.error("Error fetching user auctions:", error);
-          alert("An error occurred while fetching the user auctions.");
-      });
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("data", data);
+            displayUserAuctions(data);
+          })
+          .catch((error) => {
+            console.log("error", response);
+            console.error("Error fetching user auctions:", error);
+            alert("An error occurred while fetching the user auctions.");
+          });
 
         // Set up event listeners
         authLink.addEventListener("click", handleSignOut);
@@ -464,8 +461,8 @@
         function displayUserProfile(user) {
           document.getElementById("username").textContent = "user.username";
           document.getElementById("email").textContent = "user.email";
-          document.getElementById("profileImage").src = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
-          
+          document.getElementById("profileImage").src =
+            "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
         }
 
         function displayUserItems(items) {
@@ -500,7 +497,9 @@
             <div class="auction-card">
                 <h4>${auction.item.name}</h4>
                 <p>Current Bid: $${auction.currentPrice}</p>
-                <p>End Time: ss ${new Date(auction.endTime).toLocaleString()}</p>
+                <p>End Time: ss ${new Date(
+                  auction.endTime
+                ).toLocaleString()}</p>
             </div>
         `
             )
@@ -524,54 +523,55 @@
         async function handleCreateItem(e) {
           e.preventDefault();
           const itemName = document.getElementById("itemName").value;
-          const itemDescription = document.getElementById("itemDescription").value;
+          const itemDescription =
+            document.getElementById("itemDescription").value;
           const startingPrice = document.getElementById("startingPrice").value;
           const status = "ACTIVE";
-      
+
           try {
-              const response = await fetch("http://localhost:8080/items", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      "Authorization": `Bearer ${token}`
-                  },
-                  body: JSON.stringify({
-                      name: itemName,
-                      description: itemDescription,
-                      startingPrice: startingPrice,
-                      status: status
-                  })
-              });
-      
-              if (response.ok) {
-                  alert("Item created successfully!");
-                  itemModal.style.display = "none";
-                  createItemForm.reset();
-                  // Fetch and display updated items
-                  fetch("http://localhost:8080/items", {
-                      method: "GET",
-                      headers: {
-                          "Content-Type": "application/json",
-                          "Authorization": `Bearer ${token}`
-                      }
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                      displayUserItems(data);
-                  })
-                  .catch(error => {
-                      console.error("Error fetching user items:", error);
-                      alert("An error occurred while fetching the user items.");
-                  });
-              } else {
-                  const errorData = await response.json();
-                  alert(`Item creation failed: ${errorData.message}`);
-              }
+            const response = await fetch("http://localhost:8080/items", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                name: itemName,
+                description: itemDescription,
+                startingPrice: startingPrice,
+                status: status,
+              }),
+            });
+
+            if (response.ok) {
+              alert("Item created successfully!");
+              itemModal.style.display = "none";
+              createItemForm.reset();
+              // Fetch and display updated items
+              fetch("http://localhost:8080/items", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  displayUserItems(data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching user items:", error);
+                  alert("An error occurred while fetching the user items.");
+                });
+            } else {
+              const errorData = await response.json();
+              alert(`Item creation failed: ${errorData.message}`);
+            }
           } catch (error) {
-              console.error("Error creating item:", error);
-              alert("An error occurred while creating the item.");
+            console.error("Error creating item:", error);
+            alert("An error occurred while creating the item.");
           }
-      }
+        }
 
         async function handleCreateAuction(e) {
           e.preventDefault();
@@ -580,52 +580,50 @@
           const endTime = document.getElementById("endTime").value;
 
           try {
-              const response = await fetch("http://localhost:8080/auctions", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                      "Authorization": `Bearer ${token}`
-                  },
-                  body: JSON.stringify({
-                      itemId: itemId,
-                      startTime: new Date().toISOString(),
-                      endTime: endTime,
-                      currentPrice: startingBid
-                  })
-              });
+            const response = await fetch("http://localhost:8080/auctions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                itemId: itemId,
+                startTime: new Date().toISOString(),
+                endTime: endTime,
+                currentPrice: startingBid,
+              }),
+            });
 
-              if (response.ok) {
-                  alert("Auction created successfully!");
-                  auctionModal.style.display = "none";
-                  createAuctionForm.reset();
-                  // Fetch and display updated auctions
-                  fetch("http://localhost:8080/auctions", {
-                      method: "GET",
-                      headers: {
-                          "Content-Type": "application/json",
-                          "Authorization": `Bearer ${token}`
-                      }
-                  })
-                  .then(response => response.json())
-                  .then(data => {
-                      displayUserAuctions(data);
-                  })
-                  .catch(error => {
-                      console.error("Error fetching user auctions:", error);
-                      alert("An error occurred while fetching the user auctions.");
-                  });
-              } else {
-                  const errorData = await response.json();
-                  alert(`Auction creation failed: ${errorData.message}`);
-              }
+            if (response.ok) {
+              alert("Auction created successfully!");
+              auctionModal.style.display = "none";
+              createAuctionForm.reset();
+              // Fetch and display updated auctions
+              fetch("http://localhost:8080/auctions/myauctions", {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  displayUserAuctions(data);
+                })
+                .catch((error) => {
+                  console.error("Error fetching user auctions:", error);
+                  alert("An error occurred while fetching the user auctions.");
+                });
+            } else {
+              const errorData = await response.json();
+              alert(`Auction creation failed: ${errorData.message}`);
+            }
           } catch (error) {
-              console.error("Error creating auction:", error);
-              alert("An error occurred while creating the auction.");
+            console.error("Error creating auction:", error);
+            alert("An error occurred while creating the auction.");
           }
-      }
+        }
       });
-
-      
     </script>
   </body>
 </html>
