@@ -279,24 +279,24 @@
           });
 
         // Fetch user's bids if logged in
-        // if (token) {
-        //   fetch("http://localhost:8080/my-bids", {
-        //     method: "GET",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "Authorization": `Bearer ${token}`
-        //     }
-        //   })
-        //   .then(response => response.json())
-        //   .then(data => {
-        //     displayMyBids(data);
-        //   })
-        //   .catch(error => {
-        //     console.error("Error fetching my bids:", error);
-        //   });
-        // } else {
-        //   myBidsGrid.innerHTML = "<p>Please sign in to view your bids.</p>";
-        // }
+        if (token) {
+          fetch("http://localhost:8080/bids", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              displayMyBids(data);
+            })
+            .catch((error) => {
+              console.error("Error fetching my bids:", error);
+            });
+        } else {
+          myBidsGrid.innerHTML = "<p>Please sign in to view your bids.</p>";
+        }
 
         function displayAuctions(auctions) {
           const auctionGrid = document.getElementById("auctionGrid");
@@ -331,8 +331,8 @@
             bidElement.className = "bid";
             bidElement.innerHTML = `
         <h3>${bid.auction.item.name}</h3>
-        <p>Bid Amount: $${bid.amount}</p>
-        <p>Status: ${bid.status}</p>
+        <p>${bid.auction.item.description}</p>
+        <p>Bid Amount: $${bid?.bidAmount}</p>
       `;
             myBidsGrid.appendChild(bidElement);
           });

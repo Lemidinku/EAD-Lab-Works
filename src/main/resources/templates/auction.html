@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BidMaster - Auction Details</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -240,6 +242,10 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        // WebSocket setup
+        const socket = new SockJS("/ws");
+        const stompClient = Stomp.over(socket);
+
         const authLink = document.getElementById("authLink");
         const bidForm = document.getElementById("bidForm");
         const auctionId = new URLSearchParams(window.location.search).get("id");
@@ -359,6 +365,22 @@
 
           await placeBid(auctionId, bidAmount);
         }
+
+        // Connect to the WebSocket and subscribe
+        stompClient.connect({}, () => {
+          console.log("Connected to WebSocket");
+          stompClient.subscribe("/topic/auctions", (message) => {
+            const auctionEvent = JSON.parse(message.body);
+            const tableBody = document.getElementById("auctionTableBody");
+            auction = auctionEvent.auction;
+            if (auctionEvent.eventType === "UPDATE") {
+              console.log("Received UPDATE event:", auctionEvent.auction);
+              if (auction.id == auctionId) {
+                displayAuctionDetails(auction);
+              }
+            }
+          });
+        });
       });
 
       async function placeBid(auctionId, bidAmount) {
@@ -374,7 +396,7 @@
 
           if (response.ok) {
             alert("Bid placed successfully!");
-            window.location.reload();
+            // window.location.reload();
           } else {
             const errorData = await response.json();
             alert(`Bid failed: ${errorData.message}`);

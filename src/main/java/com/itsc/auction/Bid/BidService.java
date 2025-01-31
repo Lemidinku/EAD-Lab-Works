@@ -2,7 +2,6 @@ package com.itsc.auction.Bid;
 
 import com.itsc.auction.Auction.Auction;
 import com.itsc.auction.User.User;
-import com.itsc.auction.exception.InvalidBidException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,8 @@ public class BidService {
         return bidRepository.save(bid);
     }
 
-    public List<Bid> getAllBids() {
-        return bidRepository.findAll();
+    public List<Bid> getMyBids(Long userId) {
+        return bidRepository.findByUserId(userId);
     }
 
 }

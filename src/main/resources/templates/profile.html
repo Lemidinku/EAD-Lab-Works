@@ -390,13 +390,10 @@
             displayUserProfile(data);
           })
           .catch((error) => {
-            displayUserProfile(data);
             console.error("Error fetching user profile:", error);
             alert("An error occurred while fetching the user profile.");
           });
 
-        // Display user's items and auctions
-        //displayUserItems(dummyItems);
         console.log("Token:", token);
 
         // Fetch user items
@@ -461,8 +458,9 @@
         createAuctionForm.addEventListener("submit", handleCreateAuction);
 
         function displayUserProfile(user) {
-          document.getElementById("username").textContent = "user.username";
-          document.getElementById("email").textContent = "user.email";
+          console.log("user", user);
+          document.getElementById("username").textContent = user.username;
+          document.getElementById("email").textContent = user.email;
           document.getElementById("profileImage").src =
             "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
         }
@@ -497,11 +495,12 @@
             .map(
               (auction) => `
             <div class="auction-card">
-                <h4>${auction.item.name}</h4>
-                <p>Current Bid: $${auction.currentPrice}</p>
-                <p>End Time: ss ${new Date(
-                  auction.endTime
-                ).toLocaleString()}</p>
+                <h4>${auction.item?.name}</h4>
+                <p>Current Bid: $${auction?.currentPrice}</p>
+                <p>Highest Bidder: ${
+                  auction?.higgestBidder?.username || "No bids yet."
+                }</p>
+                <p>End Time:${new Date(auction.endTime).toLocaleString()}</p>
             </div>
         `
             )

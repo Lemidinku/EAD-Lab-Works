@@ -73,8 +73,17 @@ public class BidController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Bid>> getAllBids() {
-        List<Bid> bids = bidService.getAllBids();
+    public ResponseEntity<List<Bid>> getMyBids(HttpServletRequest request) {
+        Claims claims = (Claims) request.getAttribute("user");
+        String username = claims.getSubject();
+
+        User user = userService.findUserByUsername(username);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        List<Bid> bids = bidService.getMyBids(user.getId());
         return ResponseEntity.ok(bids);
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.itsc.auction.Auth;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,16 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itsc.auction.Auction.Auction;
 import com.itsc.auction.User.User;
 import com.itsc.auction.User.UserService;
 import com.itsc.auction.Utils.JwtUtil;
 
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
@@ -112,6 +117,33 @@ public class AuthController {
 }
 
 
+    @GetMapping("/auth/profile")
+    public ResponseEntity<?> getUser(HttpServletRequest request) {
+    System.out.println("Getting user profile");
+    try {
+        Claims claims = (Claims) request.getAttribute("user");
+
+        if (claims == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: No user claims found in request.");
+        }
+
+        String username = claims.getSubject();
+        System.out.println("Username: " + username);
+        User user = userService.findUserByUsername(username);
+
+        System.out.println("User found with username: " + user);
+        if (user == null) {
+            System.out.println("User not found with username: " + username);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("User not found with username: " + username);
+        }
+        return ResponseEntity.ok(user);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("An unexpected error occurred: " + e.getMessage());
+    }
+}
 
     }
 
