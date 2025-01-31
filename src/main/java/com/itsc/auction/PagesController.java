@@ -33,5 +33,10 @@ public class PagesController {
         return "profile";
     }
 
+    @GetMapping("/index")
+    public String viewLandingPage() { // to show auction details
+        return "index";
+    }
+
 }
 
