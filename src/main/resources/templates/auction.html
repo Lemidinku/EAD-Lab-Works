@@ -250,14 +250,13 @@
         const bidForm = document.getElementById("bidForm");
         const auctionId = new URLSearchParams(window.location.search).get("id");
 
-        // Check if user is logged in
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
 
         const token = localStorage.getItem("token");
         console.log("Token:", token);
 
         // Update auth link
-        if (isLoggedIn) {
+        if (token) {
           authLink.textContent = "Sign Out";
           authLink.href = "#";
           authLink.addEventListener("click", (e) => {
