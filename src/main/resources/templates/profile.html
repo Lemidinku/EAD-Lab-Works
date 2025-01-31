@@ -315,7 +315,11 @@
             placeholder="Item Description"
             required
           ></textarea>
-          <input type="file" id="itemImage" accept="image/*" required />
+          <textarea
+            id="startingPrice"
+            placeholder="starting price"
+            required
+          ></textarea>
           <button type="submit">Create Item</button>
         </form>
       </div>
@@ -358,17 +362,82 @@
         const createAuctionForm = document.getElementById("createAuctionForm");
 
         // Check if user is logged in
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        if (!isLoggedIn) {
-          window.location.href = "signin.html";
-        }
+        const token = localStorage.getItem("token");
 
-        // Display user profile
-        displayUserProfile(dummyUser);
+            // Update auth link
+            if (token) {
+                authLink.textContent = "Sign Out";
+                authLink.href = "#";
+                authLink.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem("token");
+                    window.location.href = "../index.html";
+                });
+            }
+
+
+             // Fetch user profile
+             fetch("http://localhost:8080/auth/profile", {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+                  "Authorization": `Bearer ${token}`
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              displayUserProfile(data);
+            })
+            .catch(error => {
+            displayUserProfile(data);
+              console.error("Error fetching user profile:", error);
+              alert("An error occurred while fetching the user profile.");
+          });
+
+      
 
         // Display user's items and auctions
-        displayUserItems(dummyItems);
-        displayUserAuctions(dummyAuctions);
+        //displayUserItems(dummyItems);
+        console.log("Token:", token);
+
+                    // Fetch user items
+                    fetch("http://localhost:8080/items", {
+                      method: "GET",
+                      headers: {
+                          "Content-Type": "application/json",
+                          "Authorization": `Bearer ${token}`
+                      }
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      console.log("data" ,data);
+                      displayUserItems(data);
+                    })
+                    .catch(error => {
+                    console.log("error" ,response);
+                      console.error("Error fetching user items:", error);
+                      alert("An error occurred while fetching the user items.");
+                  });
+
+        //displayUserAuctions(dummyAuctions);
+
+        fetch("http://localhost:8080/auctions", {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+          }
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log("data" ,data);
+          displayUserAuctions(data);
+      })
+      .catch(error => {
+          console.log('error', response)
+          console.error("Error fetching user auctions:", error);
+          alert("An error occurred while fetching the user auctions.");
+      });
 
         // Set up event listeners
         authLink.addEventListener("click", handleSignOut);
@@ -393,11 +462,10 @@
         createAuctionForm.addEventListener("submit", handleCreateAuction);
 
         function displayUserProfile(user) {
-          document.getElementById("username").textContent = user.username;
-          document.getElementById("email").textContent = user.email;
-          if (user.profileImage) {
-            document.getElementById("profileImage").src = user.profileImage;
-          }
+          document.getElementById("username").textContent = "user.username";
+          document.getElementById("email").textContent = "user.email";
+          document.getElementById("profileImage").src = "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png";
+          
         }
 
         function displayUserItems(items) {
@@ -431,8 +499,8 @@
               (auction) => `
             <div class="auction-card">
                 <h4>${auction.item.name}</h4>
-                <p>Current Bid: $${auction.currentBid}</p>
-                <p>End Time: ${new Date(auction.endTime).toLocaleString()}</p>
+                <p>Current Bid: $${auction.currentPrice}</p>
+                <p>End Time: ss ${new Date(auction.endTime).toLocaleString()}</p>
             </div>
         `
             )
@@ -442,8 +510,7 @@
         function handleSignOut(e) {
           e.preventDefault();
           localStorage.removeItem("token");
-          localStorage.setItem("isLoggedIn", "false");
-          window.location.href = "../index.html";
+          window.location.href = "home";
         }
 
         function handleTabClick(e) {
@@ -454,74 +521,111 @@
           document.getElementById(tabId).classList.add("active");
         }
 
-        function handleCreateItem(e) {
+        async function handleCreateItem(e) {
           e.preventDefault();
-          const name = document.getElementById("itemName").value;
-          const description = document.getElementById("itemDescription").value;
-          const newItem = { id: Date.now(), name, description };
-          dummyItems.push(newItem);
-          displayUserItems(dummyItems);
-          itemModal.style.display = "none";
-          createItemForm.reset();
-          alert("Item created successfully!");
-        }
+          const itemName = document.getElementById("itemName").value;
+          const itemDescription = document.getElementById("itemDescription").value;
+          const startingPrice = document.getElementById("startingPrice").value;
+          const status = "ACTIVE";
+      
+          try {
+              const response = await fetch("http://localhost:8080/items", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                      name: itemName,
+                      description: itemDescription,
+                      startingPrice: startingPrice,
+                      status: status
+                  })
+              });
+      
+              if (response.ok) {
+                  alert("Item created successfully!");
+                  itemModal.style.display = "none";
+                  createItemForm.reset();
+                  // Fetch and display updated items
+                  fetch("http://localhost:8080/items", {
+                      method: "GET",
+                      headers: {
+                          "Content-Type": "application/json",
+                          "Authorization": `Bearer ${token}`
+                      }
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      displayUserItems(data);
+                  })
+                  .catch(error => {
+                      console.error("Error fetching user items:", error);
+                      alert("An error occurred while fetching the user items.");
+                  });
+              } else {
+                  const errorData = await response.json();
+                  alert(`Item creation failed: ${errorData.message}`);
+              }
+          } catch (error) {
+              console.error("Error creating item:", error);
+              alert("An error occurred while creating the item.");
+          }
+      }
 
-        function handleCreateAuction(e) {
+        async function handleCreateAuction(e) {
           e.preventDefault();
           const itemId = document.getElementById("auctionItem").value;
           const startingBid = document.getElementById("startingBid").value;
           const endTime = document.getElementById("endTime").value;
-          const item = dummyItems.find(
-            (item) => item.id === Number.parseInt(itemId)
-          );
-          const newAuction = {
-            id: Date.now(),
-            item: item,
-            currentBid: startingBid,
-            endTime: endTime,
-          };
-          dummyAuctions.push(newAuction);
-          displayUserAuctions(dummyAuctions);
-          auctionModal.style.display = "none";
-          createAuctionForm.reset();
-          alert("Auction created successfully!");
-        }
+
+          try {
+              const response = await fetch("http://localhost:8080/auctions", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                      itemId: itemId,
+                      startTime: new Date().toISOString(),
+                      endTime: endTime,
+                      currentPrice: startingBid
+                  })
+              });
+
+              if (response.ok) {
+                  alert("Auction created successfully!");
+                  auctionModal.style.display = "none";
+                  createAuctionForm.reset();
+                  // Fetch and display updated auctions
+                  fetch("http://localhost:8080/auctions", {
+                      method: "GET",
+                      headers: {
+                          "Content-Type": "application/json",
+                          "Authorization": `Bearer ${token}`
+                      }
+                  })
+                  .then(response => response.json())
+                  .then(data => {
+                      displayUserAuctions(data);
+                  })
+                  .catch(error => {
+                      console.error("Error fetching user auctions:", error);
+                      alert("An error occurred while fetching the user auctions.");
+                  });
+              } else {
+                  const errorData = await response.json();
+                  alert(`Auction creation failed: ${errorData.message}`);
+              }
+          } catch (error) {
+              console.error("Error creating auction:", error);
+              alert("An error occurred while creating the auction.");
+          }
+      }
       });
 
-      // Dummy data
-      const dummyUser = {
-        username: "JaneSmith",
-        email: "jane.smith@example.com",
-        profileImage: "https://picsum.photos/id/64/150/150",
-      };
-
-      const dummyItems = [
-        {
-          id: 1,
-          name: "Antique Clock",
-          description: "A beautiful antique clock from the 18th century.",
-        },
-        {
-          id: 2,
-          name: "Vintage Camera",
-          description: "A fully functional vintage camera from the 1960s.",
-        },
-      ];
-
-      const dummyAuctions = [
-        {
-          id: 1,
-          item: { name: "Antique Clock" },
-          currentBid: 100,
-          endTime: "2025-02-20T14:00:00Z",
-        },
-        {
-          id: 2,
-          item: { name: "Vintage Camera" },
-          currentBid: 50,
-          endTime: "2025-02-22T16:30:00Z",
-        },
-      ];
+      
     </script>
   </body>
 </html>
